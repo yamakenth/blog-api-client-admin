@@ -29,3 +29,7 @@ header {
 .nav-username {
   text-decoration: underline;
 }
+
+.unpublish-article {
+  background-color: #cfcfcf;
+}
