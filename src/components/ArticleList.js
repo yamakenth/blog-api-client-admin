@@ -26,9 +26,9 @@ function ArticleList() {
             .map((article) => {
               return (
                 <Col sm={6} md={4} xl={3} className='mb-3 d-flex align-items-stretch' key={article._id}>
-                  <Card>
+                  <Card className='w-100'>
                     <Card.Body 
-                      className={`d-flex flex-column justify-content-between ${(article.published) ? '' : 'unpublish-article'}`}
+                      className={`d-flex flex-column justify-content-between ${(article.published) ? '' : 'unpublish-article'} article-card-body`}
                     >
                       <div className='mb-3'>
                         <Card.Title>{_.unescape(article.title)}</Card.Title>

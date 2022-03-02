@@ -39,3 +39,7 @@ header {
   background: none;
   color: red;
 }
+
+.article-card-body {
+  min-height: 250px;
+}
