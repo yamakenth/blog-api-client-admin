@@ -23,7 +23,7 @@ function UserAuth() {
         <Navbar.Text className='me-3'>
           Welcome <span className='nav-username'>{username}</span>
         </Navbar.Text>
-        <Nav.Link href='/'><i className='bi bi-file-earmark-plus'>&#9;Create Article</i></Nav.Link>
+        <Nav.Link href='/articles/create'><i className='bi bi-file-earmark-plus'>&#9;Create Article</i></Nav.Link>
         <button className='logout-button' onClick={handleClick}>
           <i className='bi bi-box-arrow-right'>&#9;Logout</i>
         </button>

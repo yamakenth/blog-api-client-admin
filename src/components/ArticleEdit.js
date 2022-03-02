@@ -7,31 +7,33 @@ import moment from 'moment';
 
 import CommentDisplay from './CommentDisplay';
 
-function ArticleDisplay() {
+function ArticleDisplay(props) {
   const { id } = useParams();
 
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [author, setAuthor] = useState('');
-  const [createdAt, setCreateAt] = useState('9999-01-01');
+  const [createdAt, setCreateAt] = useState(moment(Date.now()).format('YYYY-MM-DD'));
   const [published, setPublished] = useState('-1');
 
   const [authorList, setAuthorList] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:1000/blog/articles/${id}`)
-      .then((res) => {
-        const data = res.data;
-
-        setTitle(data.title);
-        setText(data.text);
-        setAuthor(data.author._id);
-        setCreateAt(data.createdAt);
-        setPublished((data.published) ? '1' : '-1');
-      })
-      .catch((err) => {
-        console.log(err);
-      });  
+    if (props.actionType === 'edit') {
+      axios.get(`http://localhost:1000/blog/articles/${id}`)
+        .then((res) => {
+          const data = res.data;
+  
+          setTitle(data.title);
+          setText(data.text);
+          setAuthor(data.author._id);
+          setCreateAt(data.createdAt);
+          setPublished((data.published) ? '1' : '-1');
+        })
+        .catch((err) => {
+          console.log(err);
+        });  
+    }
 
     axios.get('http://localhost:1000/blog/users', {
       headers: { Authorization: localStorage.getItem('token') }
@@ -42,7 +44,7 @@ function ArticleDisplay() {
       .catch(err => {
         console.log(err);
       });
-    }, [id]);
+  }, [id]);
 
   function handleTitleChange(e) {
     setTitle(e.target.value);
@@ -66,22 +68,42 @@ function ArticleDisplay() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios.put(
-      `http://localhost:1000/blog/articles/${id}`, 
-      {
-        title: title,
-        text: text,
-        author: author,
-        published: (published === '1') ? 'true' : 'false',
-      },
-      {
-        headers: { Authorization: localStorage.getItem('token') 
-      }
-    })
-      .then(res => {
-        console.log(res);
-        window.location.href='/';
+
+    if (props.actionType === 'edit') {
+      axios.put(
+        `http://localhost:1000/blog/articles/${id}`, 
+        {
+          title: title,
+          text: text,
+          author: author,
+          published: (published === '1') ? 'true' : 'false',
+        },
+        {
+          headers: { Authorization: localStorage.getItem('token') 
+        }
       })
+        .then(res => {
+          console.log(res);
+          window.location.href='/';
+        })
+    } else if (props.actionType === 'create') {
+      axios.post(
+        'http://localhost:1000/blog/articles', 
+        {
+          title: title,
+          text: text,
+          author: author,
+          published: (published === '1') ? 'true' : 'false',
+        },
+        {
+          headers: { Authorization: localStorage.getItem('token') 
+        }
+      })
+        .then(res => {
+          console.log(res);
+          // window.location.href='/'; // TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST
+        })
+    }
   }
 
   return (
@@ -128,7 +150,7 @@ function ArticleDisplay() {
             name='createdAt'
             value={moment(createdAt).format('YYYY-MM-DD')}
             onChange={handleCreatedAtChange}
-            readOnly
+            readOnly={(props.actionType === 'edit') ? true : false}
            />
         </Form.Group>
 
@@ -161,8 +183,10 @@ function ArticleDisplay() {
           Save Changes
         </Button>
       </Form>
-
-      <CommentDisplay articleid={id}/>
+      
+      {props.actionType === 'edit' &&
+        <CommentDisplay articleid={id}/>
+      }
     </>
   );
 }

@@ -19,7 +19,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Navigate replace to='/articles' />} />
           <Route path='/articles' element={<ArticleList />} />
-          <Route path='/articles/:id/edit' element={<ArticleEdit />} />
+          <Route path='/articles/create' element={<ArticleEdit actionType={'create'} />} />
+          <Route path='/articles/:id/edit' element={<ArticleEdit actionType={'edit'} />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
         </Routes>
