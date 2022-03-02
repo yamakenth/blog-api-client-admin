@@ -180,7 +180,7 @@ function ArticleDisplay(props) {
         </ButtonGroup>
 
         <Button variant='primary' type='submit' className='align-self-end'>
-          Save Changes
+          {(props.actionType === 'edit') ? 'Save Changes' : 'Add Article'}
         </Button>
       </Form>
       
