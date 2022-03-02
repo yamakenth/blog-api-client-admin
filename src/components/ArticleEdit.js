@@ -44,7 +44,7 @@ function ArticleDisplay(props) {
       .catch(err => {
         console.log(err);
       });
-  }, [id]);
+  }, [id, props.actionType]);
 
   function handleTitleChange(e) {
     setTitle(e.target.value);
