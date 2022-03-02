@@ -13,7 +13,7 @@ function ArticleDisplay() {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [author, setAuthor] = useState('');
-  const [createdAt, setCreateAt] = useState('');
+  const [createdAt, setCreateAt] = useState('9999-01-01');
   const [published, setPublished] = useState('-1');
 
   const [authorList, setAuthorList] = useState([]);
@@ -66,11 +66,27 @@ function ArticleDisplay() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    axios.put(
+      `http://localhost:1000/blog/articles/${id}`, 
+      {
+        title: title,
+        text: text,
+        author: author,
+        published: (published === '1') ? 'true' : 'false',
+      },
+      {
+        headers: { Authorization: localStorage.getItem('token') 
+      }
+    })
+      .then(res => {
+        console.log(res);
+        window.location.href='/';
+      })
   }
 
   return (
     <>
-      <Form className='d-flex flex-column'>
+      <Form className='d-flex flex-column' onSubmit={handleSubmit}>
         <Form.Group className='mb-3'>
           <Form.Label>Title</Form.Label>
           <Form.Control 
@@ -141,7 +157,7 @@ function ArticleDisplay() {
           </ToggleButton>
         </ButtonGroup>
 
-        <Button variant='primary' type='submit' className='align-self-end' onSubmit={handleSubmit}>
+        <Button variant='primary' type='submit' className='align-self-end'>
           Save Changes
         </Button>
       </Form>
