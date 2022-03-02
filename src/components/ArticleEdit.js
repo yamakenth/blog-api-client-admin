@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, ButtonGroup, ToggleButton } from 'react-bootstrap';
 import axios from 'axios';
 import _ from 'underscore';
 import moment from 'moment';
@@ -14,7 +14,7 @@ function ArticleDisplay() {
   const [text, setText] = useState('');
   const [author, setAuthor] = useState('');
   const [createdAt, setCreateAt] = useState('');
-  const [published, setPublished] = useState(false);
+  const [published, setPublished] = useState('-1');
 
   const [authorList, setAuthorList] = useState([]);
 
@@ -22,12 +22,12 @@ function ArticleDisplay() {
     axios.get(`http://localhost:1000/blog/articles/${id}`)
       .then((res) => {
         const data = res.data;
-        
+
         setTitle(data.title);
         setText(data.text);
         setAuthor(data.author._id);
         setCreateAt(data.createdAt);
-        setPublished(data.published);
+        setPublished((data.published) ? '1' : '-1');
       })
       .catch((err) => {
         console.log(err);
@@ -54,6 +54,14 @@ function ArticleDisplay() {
 
   function handleAuthorChange(e) {
     setAuthor(e.target.value);
+  }
+
+  function handleCreatedAtChange(e) {
+    setCreateAt(e.target.value);
+  }
+
+  function handlePublishedChange(e) {
+    setPublished(e.currentTarget.value);
   }
 
   function handleSubmit(e) {
@@ -97,10 +105,41 @@ function ArticleDisplay() {
           </Form.Select>
         </Form.Group>
 
-      <div>
-        <p>{moment(createdAt).format('MMMM Do YYYY')}</p>
-        <p>{String(published)}</p>
-      </div>
+        <Form.Group className='mb-3'>
+          <Form.Label>Date Written</Form.Label>
+          <Form.Control 
+            type='date' 
+            name='createdAt'
+            value={moment(createdAt).format('YYYY-MM-DD')}
+            onChange={handleCreatedAtChange}
+            readOnly
+           />
+        </Form.Group>
+
+        <ButtonGroup className='mb-3 align-self-center'>
+          <ToggleButton
+            type='radio'
+            id='unpublished'
+            name='published'
+            variant='outline-secondary'
+            value='-1'
+            checked={published === '-1'}
+            onChange={handlePublishedChange}
+            >
+            Unpublish
+          </ToggleButton>
+          <ToggleButton
+            type='radio'
+            id='published'
+            name='published'
+            variant='outline-success'
+            value='1'
+            checked={published === '1'}
+            onChange={handlePublishedChange}
+          >
+            Publish
+          </ToggleButton>
+        </ButtonGroup>
 
         <Button variant='primary' type='submit' className='align-self-end' onSubmit={handleSubmit}>
           Save Changes
