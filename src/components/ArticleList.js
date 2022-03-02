@@ -41,7 +41,7 @@ function ArticleList() {
                         </Card.Text>
                       </div>
                       <div className='d-flex justify-content-between'>
-                        <Card.Link href={`/articles/${article._id}`}>Edit</Card.Link>
+                        <Card.Link href={`/articles/${article._id}/edit`}>Edit</Card.Link>
                         <Card.Text>Published: {(article.published) ? 'Yes' : 'No'}</Card.Text>
                       </div>
                     </Card.Body>

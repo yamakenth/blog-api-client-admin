@@ -33,3 +33,9 @@ header {
 .unpublish-article {
   background-color: #cfcfcf;
 }
+
+.comment-delete-btn {
+  border: none;
+  background: none;
+  color: red;
+}
