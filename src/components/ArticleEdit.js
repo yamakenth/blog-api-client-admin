@@ -111,6 +111,16 @@ function ArticleDisplay(props) {
     }
   }
 
+  function handleDelete() {
+    axios.delete(`http://localhost:1000/blog/articles/${id}`,
+      { headers: { Authorization: localStorage.getItem('token') } }
+    )
+      .then(res => {
+        console.log(res);
+        window.location.href='/';
+      })
+  }
+
   function ErrorMessage() {
     if (error.length > 0) {
       return (
@@ -194,10 +204,18 @@ function ArticleDisplay(props) {
         </ButtonGroup>
 
         <ErrorMessage />
+        
+        <div  className='align-self-end'>
+          {props.actionType === 'edit' &&
+            <Button variant='danger' type='button' className='me-1' onClick={handleDelete}>
+              Delete
+            </Button>
+          }
+          <Button variant='primary' type='submit'>
+            {(props.actionType === 'edit') ? 'Save Changes' : 'Add Article'}
+          </Button>
+        </div>
 
-        <Button variant='primary' type='submit' className='align-self-end'>
-          {(props.actionType === 'edit') ? 'Save Changes' : 'Add Article'}
-        </Button>
       </Form>
       
       {props.actionType === 'edit' &&
