@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Form, Button, ButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Form, Button, ButtonGroup, ToggleButton, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import _ from 'underscore';
 import moment from 'moment';
@@ -15,6 +15,7 @@ function ArticleDisplay(props) {
   const [author, setAuthor] = useState('');
   const [createdAt, setCreateAt] = useState(moment(Date.now()).format('YYYY-MM-DD'));
   const [published, setPublished] = useState('-1');
+  const [error, setError] = useState('');
 
   const [authorList, setAuthorList] = useState([]);
 
@@ -101,9 +102,22 @@ function ArticleDisplay(props) {
       })
         .then(res => {
           console.log(res);
-          // window.location.href='/'; // TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST
+          if (res.data.errors) {
+            setError(res.data.errors[0]);
+          } else {
+            window.location.replace('/');
+          }
         })
     }
+  }
+
+  function ErrorMessage() {
+    if (error.length > 0) {
+      return (
+        <Alert variant='danger' className='mt-3'>{error}</Alert>
+      );
+    }
+    return null;
   }
 
   return (
@@ -178,6 +192,8 @@ function ArticleDisplay(props) {
             Publish
           </ToggleButton>
         </ButtonGroup>
+
+        <ErrorMessage />
 
         <Button variant='primary' type='submit' className='align-self-end'>
           {(props.actionType === 'edit') ? 'Save Changes' : 'Add Article'}
