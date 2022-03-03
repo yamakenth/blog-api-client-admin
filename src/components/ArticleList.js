@@ -41,7 +41,12 @@ function ArticleList() {
                         </Card.Text>
                       </div>
                       <div className='d-flex justify-content-between'>
-                        <Card.Link href={`/articles/${article._id}/edit`}>Edit</Card.Link>
+                        {localStorage.getItem('username') &&
+                          <Card.Link href={`/articles/${article._id}/edit`}>Edit</Card.Link>
+                        }
+                        {!localStorage.getItem('username') &&
+                          <Card.Link href={`/login`}>Login to edit</Card.Link>
+                        }
                         <Card.Text>Published: {(article.published) ? 'Yes' : 'No'}</Card.Text>
                       </div>
                     </Card.Body>
