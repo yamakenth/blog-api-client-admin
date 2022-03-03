@@ -157,6 +157,7 @@ function ArticleDisplay(props) {
         <Form.Group className='mb-3'>
           <Form.Label>Author</Form.Label>
           <Form.Select onChange={handleAuthorChange} value={author}>
+            <option>Choose an author</option>
             {
               authorList.map(author => {
                 return (
