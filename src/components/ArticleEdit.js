@@ -206,7 +206,7 @@ function ArticleDisplay(props) {
 
         <ErrorMessage />
         
-        <div  className='align-self-end'>
+        <div  className='align-self-center align-self-lg-end mb-3'>
           {props.actionType === 'edit' &&
             <Button variant='danger' type='button' className='me-1' onClick={handleDelete}>
               Delete
