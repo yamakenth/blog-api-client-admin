@@ -21,7 +21,7 @@ function ArticleDisplay(props) {
 
   useEffect(() => {
     if (props.actionType === 'edit') {
-      axios.get(`http://localhost:1000/blog/articles/${id}`)
+      axios.get(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`)
         .then((res) => {
           const data = res.data;
   
@@ -36,7 +36,7 @@ function ArticleDisplay(props) {
         });  
     }
 
-    axios.get('http://localhost:1000/blog/users', {
+    axios.get('https://yamakenth-blog-api-server.herokuapp.com/api/users', {
       headers: { Authorization: localStorage.getItem('token') }
     })
       .then(res => {
@@ -72,7 +72,7 @@ function ArticleDisplay(props) {
 
     if (props.actionType === 'edit') {
       axios.put(
-        `http://localhost:1000/blog/articles/${id}`, 
+        `https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`, 
         {
           title: title,
           text: text,
@@ -89,7 +89,7 @@ function ArticleDisplay(props) {
         })
     } else if (props.actionType === 'create') {
       axios.post(
-        'http://localhost:1000/blog/articles', 
+        'https://yamakenth-blog-api-server.herokuapp.com/api/articles', 
         {
           title: title,
           text: text,
@@ -112,7 +112,7 @@ function ArticleDisplay(props) {
   }
 
   function handleDelete() {
-    axios.delete(`http://localhost:1000/blog/articles/${id}`,
+    axios.delete(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`,
       { headers: { Authorization: localStorage.getItem('token') } }
     )
       .then(res => {
