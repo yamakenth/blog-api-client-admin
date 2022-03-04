@@ -22,20 +22,19 @@ function Login() {
       password
     };
 
-    axios.post(`http://localhost:1000/blog/users/login`, user)
-      .then((res) => {
+    axios.post(`https://yamakenth-blog-api-server.herokuapp.com/api/users/login`, user)
+      .then(res => {
         console.log(res.data);
         if (res.data.message) {
           setError(res.data.message);
         } else {
           localStorage.setItem('token', 'Bearer ' + res.data.token);
           localStorage.setItem('username', res.data.user.username);
+          setUsername('');
+          setPassword('');
           window.location.replace('/');
         }
       });
-
-    setUsername('');
-    setPassword('');
   }
 
   function ErrorMessage() {
@@ -46,7 +45,6 @@ function Login() {
     }
     return null;
   }
-
   
   return (
     <Form className='col-sm-4 offset-sm-4 d-flex flex-column' onSubmit={handleSubmit}>
