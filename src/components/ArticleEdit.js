@@ -73,19 +73,21 @@ function ArticleDisplay(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    const jsonPayload = {
+      title: title,
+      text: text,
+      author: author,
+      published: (published === '1') ? 'true' : 'false',
+    };
+    const authHeader = { headers: { Authorization: localStorage.getItem('token') } };
+
     // edit mode
     if (props.actionType === 'edit') {
       axios.put(
         `https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`, 
-        {
-          title: title,
-          text: text,
-          author: author,
-          published: (published === '1') ? 'true' : 'false',
-        },
-        { headers: { Authorization: localStorage.getItem('token') }
-      })
-        .then(res => {
+        jsonPayload,
+        authHeader
+      ).then(res => {
           console.log(res);
           if (res.data.errors) {
             setError(res.data.errors[0]);
@@ -99,15 +101,9 @@ function ArticleDisplay(props) {
     if (props.actionType === 'create') {
       axios.post(
         'https://yamakenth-blog-api-server.herokuapp.com/api/articles', 
-        {
-          title: title,
-          text: text,
-          author: author,
-          published: (published === '1') ? 'true' : 'false',
-        },
-        { headers: { Authorization: localStorage.getItem('token') }
-      })
-        .then(res => {
+        jsonPayload,
+        authHeader
+      ).then(res => {
           console.log(res);
           if (res.data.errors) {
             setError(res.data.errors[0]);
