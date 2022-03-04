@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 
 import BrandLogo from './BrandLogo';
 
 function UserAuth() {
   const [username, setUsername] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUsername(localStorage.getItem('username') || '');
@@ -14,7 +16,8 @@ function UserAuth() {
     localStorage.removeItem('username');
     localStorage.removeItem('token');
     setUsername('');
-    window.location.href = '/';
+
+    navigate('/');
   }
   
   if (username.length > 0) {
