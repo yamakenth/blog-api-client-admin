@@ -8,7 +8,7 @@ function ConfirmChangeModal(props) {
   const { articleid } = useParams();
 
   function handleCommentDelete() {
-    axios.delete(`http://localhost:1000/blog/articles/${articleid}/comments/${props.commentid}`, {
+    axios.delete(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${articleid}/comments/${props.commentid}`, {
       headers: { Authorization: localStorage.getItem('token') }
     })
       .then((res) => {
@@ -43,7 +43,7 @@ function CommentDisplay(props) {
   const [commentToDelete, setCommentToDelete] = useState('');
 
   useEffect(() => {
-    axios.get(`http://localhost:1000/blog/articles/${props.articleid}/comments`)
+    axios.get(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${props.articleid}/comments`)
       .then((res) => {
         setComments(res.data);
       })
