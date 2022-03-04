@@ -36,6 +36,7 @@ function Login() {
           setUsername('');
           setPassword('');
           navigate('/');
+          window.location.reload();
         }
       });
   }
