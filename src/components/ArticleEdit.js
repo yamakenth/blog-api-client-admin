@@ -21,6 +21,7 @@ function ArticleDisplay(props) {
   const [authorList, setAuthorList] = useState([]);
 
   useEffect(() => {
+    // if edit mode then fetch data 
     if (props.actionType === 'edit') {
       axios.get(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`)
         .then(res => {
@@ -37,6 +38,7 @@ function ArticleDisplay(props) {
         });  
     }
 
+    // fetch list of users for author dropdown 
     axios.get('https://yamakenth-blog-api-server.herokuapp.com/api/users', {
       headers: { Authorization: localStorage.getItem('token') }
     })
@@ -71,6 +73,7 @@ function ArticleDisplay(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    // edit mode
     if (props.actionType === 'edit') {
       axios.put(
         `https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`, 
@@ -80,15 +83,20 @@ function ArticleDisplay(props) {
           author: author,
           published: (published === '1') ? 'true' : 'false',
         },
-        {
-          headers: { Authorization: localStorage.getItem('token') 
-        }
+        { headers: { Authorization: localStorage.getItem('token') }
       })
         .then(res => {
           console.log(res);
-          navigate('/');
+          if (res.data.errors) {
+            setError(res.data.errors[0]);
+          } else {
+            navigate('/');
+          }
         })
-    } else if (props.actionType === 'create') {
+    } 
+    
+    // create mode
+    if (props.actionType === 'create') {
       axios.post(
         'https://yamakenth-blog-api-server.herokuapp.com/api/articles', 
         {
@@ -97,9 +105,7 @@ function ArticleDisplay(props) {
           author: author,
           published: (published === '1') ? 'true' : 'false',
         },
-        {
-          headers: { Authorization: localStorage.getItem('token') 
-        }
+        { headers: { Authorization: localStorage.getItem('token') }
       })
         .then(res => {
           console.log(res);
