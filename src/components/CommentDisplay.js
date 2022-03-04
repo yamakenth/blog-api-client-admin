@@ -3,7 +3,9 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Card, Modal, Button } from 'react-bootstrap';
 import moment from 'moment';
+import _ from 'underscore';
 
+// modal to confirm deletion
 function ConfirmChangeModal(props) {
   const { articleid } = useParams();
 
@@ -11,7 +13,7 @@ function ConfirmChangeModal(props) {
     axios.delete(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${articleid}/comments/${props.commentid}`, {
       headers: { Authorization: localStorage.getItem('token') }
     })
-      .then((res) => {
+      .then(res => {
         console.log(res);
         window.location.reload();
       });
@@ -19,24 +21,25 @@ function ConfirmChangeModal(props) {
   
   return (
     <Modal show={props.show} onHide={props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Comment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete this comment? This action cannot be undone.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={props.handleClose}>
-            Close
-          </Button>
-          <Button variant="danger" onClick={() => { props.handleClose(); handleCommentDelete(); }}>
-            Delete
-          </Button>
-        </Modal.Footer>     
+      <Modal.Header closeButton>
+        <Modal.Title>Delete Comment</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        Are you sure you want to delete this comment? This action cannot be undone.
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={props.handleClose}>
+          Close
+        </Button>
+        <Button variant="danger" onClick={() => { props.handleClose(); handleCommentDelete(); }}>
+          Delete
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 }
 
+// comment display
 function CommentDisplay(props) {
   const [comments, setComments] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -44,10 +47,10 @@ function CommentDisplay(props) {
 
   useEffect(() => {
     axios.get(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${props.articleid}/comments`)
-      .then((res) => {
+      .then(res => {
         setComments(res.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, [props.articleid]);
@@ -63,7 +66,7 @@ function CommentDisplay(props) {
   }
   
   return (
-    <div>
+    <>
       <h6>Comments ({comments.length})</h6>
       <hr className='mt-1'/>
       {
@@ -74,7 +77,7 @@ function CommentDisplay(props) {
                 <Card.Body  className='py-2'>
                   <div className='d-flex justify-content-between'>
                     <Card.Text className='text-muted mb-1'>
-                      {comment.author} | {moment(comment.createdAt).format('MMMM Do YYYY')}
+                      {_.unescape(comment.author)} | {moment(comment.createdAt).format('MMMM Do YYYY')}
                     </Card.Text>
                     <button 
                       type='button' 
@@ -85,7 +88,7 @@ function CommentDisplay(props) {
                     </button>
                   </div>
                   <Card.Text>
-                    {comment.text}
+                    {_.unescape(comment.text)}
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -99,7 +102,7 @@ function CommentDisplay(props) {
         handleShow={handleShow} 
         commentid={commentToDelete}
       />
-    </div>
+    </>
   );
 }
 
