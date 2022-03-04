@@ -40,6 +40,6 @@ header {
   color: red;
 }
 
-.article-card-body {
+.article-card {
   min-height: 250px;
 }
