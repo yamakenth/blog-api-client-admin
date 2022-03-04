@@ -81,20 +81,22 @@ function ArticleDisplay(props) {
     };
     const authHeader = { headers: { Authorization: localStorage.getItem('token') } };
 
+    function handleEditRes(res) {
+      console.log(res);
+      if (res.data.errors) {
+        setError(res.data.errors[0]);
+      } else {
+        navigate('/');
+      }      
+    }
+
     // edit mode
     if (props.actionType === 'edit') {
       axios.put(
         `https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`, 
         jsonPayload,
         authHeader
-      ).then(res => {
-          console.log(res);
-          if (res.data.errors) {
-            setError(res.data.errors[0]);
-          } else {
-            navigate('/');
-          }
-        })
+      ).then(res => handleEditRes(res))
     } 
     
     // create mode
@@ -103,14 +105,7 @@ function ArticleDisplay(props) {
         'https://yamakenth-blog-api-server.herokuapp.com/api/articles', 
         jsonPayload,
         authHeader
-      ).then(res => {
-          console.log(res);
-          if (res.data.errors) {
-            setError(res.data.errors[0]);
-          } else {
-            navigate('/');
-          }
-        })
+      ).then(res => handleEditRes(res))
     }
   }
 
