@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -7,6 +8,8 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState('');
+
+  const navigate = useNavigate();
 
   function handleUsernameChange(e) {
     setUsername(e.target.value);
@@ -28,18 +31,18 @@ function Signup() {
       'password-confirm': passwordConfirm
     };
 
-    axios.post(`http://localhost:1000/blog/users/signup`, user)
-      .then((res) => {
+    axios.post(`https://yamakenth-blog-api-server.herokuapp.com/api/users/signup`, user)
+      .then(res => {
         if (res.data.errors) {
           setError(res.data.errors[0]);
         } else {
-          window.location.replace('/');
+          setUsername('');
+          setPassword('');
+          setPasswordConfirm('');
+          
+          navigate('/');
         }
       });
-
-    setUsername('');
-    setPassword('');
-    setPasswordConfirm('');
   }
 
   function ErrorMessage() {
