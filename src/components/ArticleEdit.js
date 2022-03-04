@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Button, ButtonGroup, ToggleButton, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import _ from 'underscore';
@@ -9,6 +9,7 @@ import CommentDisplay from './CommentDisplay';
 
 function ArticleDisplay(props) {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -22,7 +23,7 @@ function ArticleDisplay(props) {
   useEffect(() => {
     if (props.actionType === 'edit') {
       axios.get(`https://yamakenth-blog-api-server.herokuapp.com/api/articles/${id}`)
-        .then((res) => {
+        .then(res => {
           const data = res.data;
   
           setTitle(data.title);
@@ -31,7 +32,7 @@ function ArticleDisplay(props) {
           setCreateAt(data.createdAt);
           setPublished((data.published) ? '1' : '-1');
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });  
     }
@@ -85,7 +86,7 @@ function ArticleDisplay(props) {
       })
         .then(res => {
           console.log(res);
-          window.location.href='/';
+          navigate('/');
         })
     } else if (props.actionType === 'create') {
       axios.post(
@@ -105,7 +106,7 @@ function ArticleDisplay(props) {
           if (res.data.errors) {
             setError(res.data.errors[0]);
           } else {
-            window.location.replace('/');
+            navigate('/');
           }
         })
     }
@@ -117,7 +118,7 @@ function ArticleDisplay(props) {
     )
       .then(res => {
         console.log(res);
-        window.location.href='/';
+        navigate('/');
       })
   }
 
