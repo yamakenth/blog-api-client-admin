@@ -1,4 +1,5 @@
 import { Container, Navbar, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import BrandLogo from './BrandLogo';
 
@@ -12,9 +13,9 @@ function Footer() {
               <i className='bi bi-github'>&#9;GitHub</i>
             </Nav.Link>
           </Nav>
-          <Navbar.Brand href='/' className='mx-0'><BrandLogo />Blog Admin</Navbar.Brand>
+          <Navbar.Brand as={Link} to='/' className='mx-0'><BrandLogo />Blog Admin</Navbar.Brand>
           <Nav>
-            <Nav.Link href='https://google.com' target='_blank'>
+            <Nav.Link href='https://yamakenth.github.io/blog-api-client/' target='_blank'>
               <i className='bi bi-person'>&#9;User Page</i>
             </Nav.Link>
           </Nav>
