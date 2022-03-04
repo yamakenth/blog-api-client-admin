@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -6,6 +7,8 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const navigate = useNavigate();
 
   function handleUsernameChange(e) {
     setUsername(e.target.value);
@@ -32,7 +35,7 @@ function Login() {
           localStorage.setItem('username', res.data.user.username);
           setUsername('');
           setPassword('');
-          window.location.replace('/');
+          navigate('/');
         }
       });
   }
