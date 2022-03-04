@@ -34,7 +34,7 @@ function ArticleList() {
   }, []);
   
   return (
-    <div>
+    <>
       <h4 className='mb-3'>{`Posts (${articles.length})`}</h4>
       <Row>
         {
@@ -72,7 +72,7 @@ function ArticleList() {
             })
         }
       </Row>
-    </div>
+    </>
   );
 }
 
